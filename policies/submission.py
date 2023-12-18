@@ -24,17 +24,6 @@ class Submission:
 
         return None
 
-    def get_defensive_action(self, state):
-        opponent = gm.MIN if state.is_max_turn() else gm.MAX
-        corr = state.corr
-        idx = np.argwhere((corr[:, gm.EMPTY] == 1) & (corr[:, opponent] == state.win_size - 1))
-
-        for p, r, c in idx:
-            pos = self.find_empty(state, p, r, c)
-            if pos is not None:
-                return pos  # Block the opponent's winning move
-
-        return None
 
     def find_empty(self, state, p, r, c):
         if p == 0:  # horizontal
