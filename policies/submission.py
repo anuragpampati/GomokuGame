@@ -1,7 +1,6 @@
 import numpy as np
 import gomoku as gm
 
-#subbmisiionclakn
 
 class Submission:
     def __init__(self, board_size, win_size, max_depth=4):
