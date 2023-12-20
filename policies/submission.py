@@ -20,21 +20,21 @@ class Submission:
         for p, r, c in idx:
             pos = self.find_empty(state, p, r, c)
             if pos is not None:
-                return pos  # Make the winning move
+                return pos
 
         return None
 
 
     def find_empty(self, state, p, r, c):
-        if p == 0:  # horizontal
+        if p == 0:
             return r, c + state.board[gm.EMPTY, r, c:c + state.win_size].argmax()
-        if p == 1:  # vertical
+        if p == 1:
             return r + state.board[gm.EMPTY, r:r + state.win_size, c].argmax(), c
-        if p == 2:  # diagonal
+        if p == 2:
             rng = np.arange(state.win_size)
             offset = state.board[gm.EMPTY, r + rng, c + rng].argmax()
             return r + offset, c + offset
-        if p == 3:  # antidiagonal
+        if p == 3:
             rng = np.arange(state.win_size)
             offset = state.board[gm.EMPTY, r - rng, c + rng].argmax()
             return r - offset, c + offset
@@ -121,18 +121,16 @@ class Submission:
             if pos is not None:
                 blocking_action = self.get_blocking_action(state, pos)
                 if blocking_action is not None:
-                    return blocking_action  # Block the opponent's winning move
+                    return blocking_action
 
-        return None  # No defensive move available
+        return None
 
     def get_blocking_action(self, state, pos):
-        # Check if blocking the opponent's move would create a winning move for the AI
         for p in range(4):
             row, col = pos
             for _ in range(self.win_size - 1):
                 row, col = row - self.directions[p][0], col - self.directions[p][1]
             if state.is_valid_action((row, col)) and state.board[gm.EMPTY, row, col]:
-                # Check if blocking the opponent's move doesn't create a winning move for them
                 temp_state = state.copy()
                 temp_state = temp_state.perform((row, col))
                 if not self.get_winning_action(temp_state):
@@ -158,4 +156,3 @@ class Submission:
             fewest_moves = min(fewest_moves, moves_to_win)
 
         return fewest_moves
-
